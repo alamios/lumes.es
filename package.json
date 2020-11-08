@@ -1,0 +1,20 @@
+{
+  "name": "lumes.es",
+  "description": "A web-app to send and receive fire alerts",
+  "version": "0.0.1",
+  "homepage": "https://github.com/alamios/lumes.es",
+  "repository": "github:alamios/lumes.es",
+  "license": "GPL-3.0-or-later",
+  "author": {
+    "name": "alamios",
+    "email": "alamios@pm.me",
+    "url": "https://alamios.es"
+  },
+  "private": true,
+  "dependencies": {
+    "someutils-js": "alamios/someutils-js"
+  },
+  "scripts": {
+    "postinstall": "./yarn-postinstall.sh"
+  }
+}

@@ -1,0 +1,36 @@
+{
+    "name": "alamios/lumes.es",
+    "description": "A web-app to send and receive fire alerts",
+    "type": "project",
+    "version": "0.0.1",
+    "homepage": "https://github.com/alamios/lumes.es",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "alamios",
+            "email": "alamios@pm.me",
+            "homepage": "https://alamios.es",
+            "role": "Developer"
+        }
+    ],
+    "config": {
+        "vendor-dir": "src/libraries/php"
+    },
+    "repositories": [
+        {
+          "type": "vcs",
+          "url": "https://github.com/alamios/someutils-php.git"
+        }
+    ],
+    "require": {
+      "alamios/someutils-php": "dev-master"
+    },
+    "scripts": {
+      "post-package-install": [
+        "sh composer-postinstall.sh"
+      ],
+      "post-package-update": [
+        "sh composer-postinstall.sh"
+      ]
+    }
+}
