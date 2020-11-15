@@ -24,13 +24,5 @@
     ],
     "require": {
       "alamios/someutils-php": "dev-master"
-    },
-    "scripts": {
-      "post-package-install": [
-        "sh composer-postinstall.sh"
-      ],
-      "post-package-update": [
-        "sh composer-postinstall.sh"
-      ]
     }
 }

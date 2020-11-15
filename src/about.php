@@ -8,19 +8,13 @@
 <html lang=<?=$lang["selected"]?>>
 <head>
     <?php require_once($root . "/modules/base.html"); ?>
-    <link rel="stylesheet" href="/libraries/js/leaflet/dist/leaflet.css">
-    <link rel="stylesheet" href="/styles/index.css">
-    <script defer src="/libraries/js/leaflet/dist/leaflet.js"></script>
-    <script defer src="/scripts/index.js"></script>
-    <title><?=$lang["index"]["title"]?></title>
-    <script>
-        var lang = <?php echo json_encode($lang); ?>;
-    </script>
+    <link rel="stylesheet" href="/styles/about.css">
+    <title><?=$lang["about"]["title"]?>&nbsp;<?=$lang["common"]["app.name"]?></title>
 </head>
 <body>
     <?php require_once($root . "/fragments/header.php"); ?>
     <main>
-        <div id="mapdiv"></div>
+        
     </main>
     <?php require_once($root . "/fragments/footer.php"); ?>
 </body>
