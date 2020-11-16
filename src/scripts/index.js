@@ -116,6 +116,7 @@ function loadFirmsData() {
                 type: "GET",
                 url: window.location.href + params.data_url + "/" + value,
                 dataType: "text",
+                crossDomain: true,
                 success: function(csv) {
                     var data = $.csv.toObjects(csv);
                     for (row of data) {
