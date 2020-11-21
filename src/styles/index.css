@@ -4,13 +4,29 @@
     z-index: 1;
 }
 
+.markerIcon {
+    line-height: 22px;
+    font-size: 30px;
+}
+
+
+/*
+ *
+ * Popups
+ *
+*/
+.leaflet-popup-content-wrapper {
+    border-radius: 7px;
+}
 .leaflet-popup-content {
+    width: 160px;
     margin: 0;
     padding: 10px 15px;
 }
 .leaflet-popup-content p {
     font-size: 1rem;
     margin: 0 0 5px;
+    /* white-space: nowrap; */
 }
 .leaflet-popup-content p:last-of-type {
     margin: 0px;
@@ -38,9 +54,21 @@
 .leaflet-popup-content span {
     font-size: 0.9rem;
 }
-.leaflet-popup-content {
-    width: 200px;
-}
 .leaflet-popup-content .info {
     color: black;
+}
+
+
+/*
+ *
+ * Layers
+ *
+*/
+.leaflet-control-layers-overlays input,
+.leaflet-control-layers-base input {
+    margin-right: 5px;
+}
+.leaflet-control-layers-overlays span {
+    font-size: 1rem;
+    /* font-weight: normal; */
 }
