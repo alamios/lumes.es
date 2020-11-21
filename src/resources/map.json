@@ -1,0 +1,14 @@
+{
+    "def_loc": [39.9625017, -3.9233584],
+    "def_zoom": 6,
+    "geoloc_zoom": 13,
+    "firms_url": "/firms/",
+    "firms_europe": {
+        "MODIS": "MODIS_C6_Europe_24h.csv",
+        "SUOMI_VIIRS": "SUOMI_VIIRS_C2_Europe_24h.csv",
+        "J1_VIIRS": "J1_VIIRS_C2_Europe_24h.csv"
+    },
+    "marker_color": "rgb(250, 100, 5)",
+    "firms_size": 1,
+    "firms_color": "rgb(240, 0, 0)"
+}

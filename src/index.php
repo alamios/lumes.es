@@ -15,6 +15,7 @@
     <title><?=$lang["index"]["title"]?></title>
     <script>
         var lang = <?php echo json_encode($lang); ?>;
+        var params = <?php echo file_get_contents("resources/params.json"); ?>
     </script>
 </head>
 <body>
