@@ -6,17 +6,13 @@ rsync -q src/* dist
 rsync -rq src/modules dist
 rsync -rq src/fragments dist
 rsync -rq src/resources dist
+rsync -rq src/pages dist
 rsync -rq src/scripts dist
 rsync -rq src/styles dist
 
 declare -a arr=(
     'src/libraries/php/alamios/someutils-php/src'
     'src/libraries/js/someutils-js/dist'
-    'src/libraries/js/@fortawesome/fontawesome-free/css'
-    'src/libraries/js/@fortawesome/fontawesome-free/webfonts'
-    'src/libraries/js/jquery/dist'
-    'src/libraries/js/jquery-csv/src'
-    'src/libraries/js/leaflet/dist'
     )
     
 for from in "${arr[@]}"; do
