@@ -1,5 +1,6 @@
 var map = L.map('mapdiv');
 var point;
+var geojsons = {};
 
 var baseLayers = {
     osm:  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -27,9 +28,7 @@ var alertSize = [parseInt(getStyleRuleValue("line-height", ".markerIcon", "index
                 parseInt(getStyleRuleValue("font-size", ".markerIcon", "index.css").split(".")[0])];
 
 var popupOpened = false;
-var popup = L.popup({
-    closeButton: false
-});
+var popup = L.popup();
 
 var baseControl = L.control.layers(baseLayers, null, {collapsed:false});
 var alertControl = L.control.layers(null, alertLayers, {collapsed:false});
@@ -47,20 +46,25 @@ map.addLayer(alertLayers.firms_europe);
 
 setLayersNames();
 setLocation();
-loadFirmsData();
+loadGeoJSONData();
 
-var dialogConfirm = someutils.loadURL(window.location.href + "/fragments/dialogs/mark_confirm.php");
-var dialogInfo = someutils.loadURL(window.location.href + "/fragments/dialogs/mark_info.php");
+var dialogConfirm = someutils.loadURL(window.location.origin + "/fragments/dialogs/mark_confirm.php");
+var dialogInfo = someutils.loadURL(window.location.origin + "/fragments/dialogs/mark_info.php");
+var dialogError = someutils.loadURL(window.location.origin + "/fragments/dialogs/mark_error.php");
 
 map.on('click', mapClicked);
 map.on('contextmenu', mapClicked);
 
-
 function mapClicked(e) {
     if (burgerCloseIcon.classList.contains("hidden")) {
-        if (!popupOpened) {
+        if (!popupOpened) { 
             point = e.latlng;
-            openPopup(dialogConfirm);
+            if (insideCountry(point.lat, point.lng))
+                openPopup(dialogConfirm);
+            else {
+                openPopup(dialogError);
+                markCountry.textContent = Object.keys(geojsons).toString();
+            }
         }
         else {
             closePopup();
@@ -73,7 +77,7 @@ function markClicked(e) {
         point = e.latlng;
         openPopup(dialogInfo);
         markUser.textContent = e.target.options.properties.name;
-        markDate.textContent = new Date(e.target.options.properties.date).toShortReversedString("/", ":", " - ");
+        markDate.textContent = dateutils.toShortReversedString(new Date(e.target.options.properties.date), "/", ":", " - ");
         L.DomEvent.stop(e);
     }
 }
@@ -117,6 +121,29 @@ function setLocation() {
     }
 }
 
+// Adapted from https://fogos.pt
+function insideCountry(lat, long) {
+    var x = long;
+    var y = lat;
+    var inside = false;
+    Object.entries(geojsons).forEach(([name, geojson]) => {
+        for (var k=0; k<geojson.geometry.coordinates.length; k++) {
+            var polygon = geojson.geometry.coordinates[k][0];
+            for (var i=0, j=polygon.length-1; i<polygon.length; j=i++) {
+                var xi = polygon[i][0], yi = polygon[i][1];
+                var xj = polygon[j][0], yj = polygon[j][1];
+
+                var intersect = ((yi > y) != (yj > y))
+                    && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+                if (intersect) inside = !inside;
+            }
+            if (inside)
+                return name;
+        }
+    });
+    return inside;
+};
+
 function loadFirmsData() {
     Object.entries(params.firms_europe).forEach(([name, value]) => {
         $(function() {
@@ -128,19 +155,37 @@ function loadFirmsData() {
                 success: function(csv) {
                     var data = $.csv.toObjects(csv);
                     for (row of data) {
-                        L.circle([row.latitude, row.longitude], {
-                            color: params.firms_color,
-                            radius: params.firms_size,
-                            properties: {
-                                name: name.replace("_", " "),
-                                date: someutils.parseCommonDatetime(
-                                    row.acq_date+" "+row.acq_time.insertAt("-", 2), "-", "-", " ").getTime()
-                            }
-                        }).addTo(alertLayers.firms_europe)
-                        .on('click', markClicked);
+                        if (insideCountry(row.latitude, row.longitude)) {
+                            L.circle([row.latitude, row.longitude], {
+                                color: params.firms_color,
+                                radius: params.firms_size,
+                                properties: {
+                                    name: name.replace("_", " "),
+                                    date: dateutils.parseCommonDatetime(
+                                        row.acq_date+" "+row.acq_time.insertAt("-", 2), "-", "-", " ").getTime()
+                                }
+                            }).addTo(alertLayers.firms_europe)
+                            .on('click', markClicked);
+                        }
                     }
                 }
             });
+        });
+    })
+}
+
+function loadGeoJSONData() {
+    Object.entries(params.geojson_countries).forEach(([name, value]) => {
+        $(function() {
+            $.ajax({
+                type: "GET",
+                url: window.location.origin + params.geojson_url + value,
+                dataType: "json",
+                crossDomain: true,
+                success: function(json) {
+                    geojsons[name] = json;
+                    loadFirmsData();
+            }});
         });
     })
 }

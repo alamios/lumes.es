@@ -10,5 +10,9 @@
     },
     "marker_color": "rgb(250, 100, 5)",
     "firms_size": 1,
-    "firms_color": "rgb(240, 0, 0)"
+    "firms_color": "rgb(240, 0, 0)",
+    "geojson_url": "/geojson/",
+    "geojson_countries": {
+        "España": "spain.geojson"
+    }
 }
